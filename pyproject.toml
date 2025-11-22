@@ -111,13 +111,11 @@ disallow_untyped_defs = false
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = "-ra -q --strict-markers --cov=app --cov-report=term-missing --cov-report=html"
+addopts = "-ra -q --strict-markers"
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
 python_functions = "test_*"
-asyncio_mode = "auto"
-asyncio_default_fixture_loop_scope = "function"
 
 [tool.coverage.run]
 source = ["app"]
