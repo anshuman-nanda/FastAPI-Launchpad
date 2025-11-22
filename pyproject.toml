@@ -3,7 +3,7 @@ name = "fastapi-production-template"
 version = "0.1.0"
 description = "Production-ready FastAPI template with best practices"
 authors = [
-    {name = "Anshuman Nanda",email = "anshuman@example.com"}
+    {name = "Anshuman Nanda", email = "anshuman@example.com"}
 ]
 readme = "README.md"
 requires-python = "^3.12"
