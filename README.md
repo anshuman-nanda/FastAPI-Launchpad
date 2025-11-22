@@ -52,6 +52,7 @@ fastapi-production-template/
 │   └── versions/
 ├── docs/                    # Documentation
 ├── scripts/                 # Utility scripts
+├── Makefile                 # Development commands
 ├── .env.example             # Environment variables example
 ├── .gitignore
 ├── .dockerignore

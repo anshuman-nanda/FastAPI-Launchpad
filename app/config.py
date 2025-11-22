@@ -4,13 +4,17 @@ Follows the Single Responsibility Principle by separating configuration concerns
 """
 
 from functools import lru_cache
-from typing import Any
 
-from pydantic import Field, PostgresDsn, RedisDsn, field_validator
+from pydantic import (
+    BaseModel,
+    Field,
+    PostgresDsn,
+    RedisDsn,
+)
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class AppSettings(BaseSettings):
+class AppSettings(BaseModel):
     """Application settings."""
 
     app_name: str = Field(default="FastAPI Production Template", description="Application name")
@@ -19,12 +23,14 @@ class AppSettings(BaseSettings):
         default="Production-ready FastAPI template with best practices",
         description="Application description",
     )
-    environment: str = Field(default="development", description="Environment (development/staging/production)")
+    environment: str = Field(
+        default="development", description="Environment (development/staging/production)"
+    )
     debug: bool = Field(default=True, description="Debug mode")
     api_v1_prefix: str = Field(default="/api/v1", description="API v1 prefix")
 
 
-class ServerSettings(BaseSettings):
+class ServerSettings(BaseModel):
     """Server settings."""
 
     host: str = Field(default="0.0.0.0", description="Server host")
@@ -33,7 +39,7 @@ class ServerSettings(BaseSettings):
     reload: bool = Field(default=True, description="Auto-reload on code changes")
 
 
-class DatabaseSettings(BaseSettings):
+class DatabaseSettings(BaseModel):
     """Database settings."""
 
     database_url: PostgresDsn = Field(
@@ -44,23 +50,15 @@ class DatabaseSettings(BaseSettings):
     database_max_overflow: int = Field(default=0, description="Database max overflow connections")
     database_echo: bool = Field(default=False, description="Echo SQL queries")
 
-    @field_validator("database_url", mode="before")
-    @classmethod
-    def validate_database_url(cls, v: Any) -> Any:
-        """Validate database URL."""
-        if isinstance(v, str):
-            return v
-        return v
 
-
-class RedisSettings(BaseSettings):
+class RedisSettings(BaseModel):
     """Redis settings."""
 
     redis_url: RedisDsn = Field(default="redis://localhost:6379/0", description="Redis URL")
     redis_cache_ttl: int = Field(default=3600, description="Redis cache TTL in seconds")
 
 
-class SecuritySettings(BaseSettings):
+class SecuritySettings(BaseModel):
     """Security settings."""
 
     secret_key: str = Field(
@@ -75,7 +73,7 @@ class SecuritySettings(BaseSettings):
     )
 
 
-class CORSSettings(BaseSettings):
+class CORSSettings(BaseModel):
     """CORS settings."""
 
     cors_origins: list[str] = Field(
@@ -85,9 +83,13 @@ class CORSSettings(BaseSettings):
     cors_allow_credentials: bool = Field(default=True, description="Allow credentials")
     cors_allow_methods: list[str] = Field(default=["*"], description="Allowed methods")
     cors_allow_headers: list[str] = Field(default=["*"], description="Allowed headers")
+    allowed_hosts: list[str] = Field(
+        default=["*.example.com", "example.com"],
+        description="Allowed hosts for TrustedHostMiddleware",
+    )
 
 
-class LoggingSettings(BaseSettings):
+class LoggingSettings(BaseModel):
     """Logging settings."""
 
     log_level: str = Field(default="INFO", description="Log level")
@@ -103,7 +105,7 @@ class LoggingSettings(BaseSettings):
     log_compression: str = Field(default="zip", description="Log compression format")
 
 
-class EmailSettings(BaseSettings):
+class EmailSettings(BaseModel):
     """Email settings."""
 
     smtp_host: str = Field(default="smtp.gmail.com", description="SMTP host")
@@ -114,7 +116,7 @@ class EmailSettings(BaseSettings):
     emails_from_name: str = Field(default="FastAPI Template", description="From name")
 
 
-class CelerySettings(BaseSettings):
+class CelerySettings(BaseModel):
     """Celery settings."""
 
     celery_broker_url: str = Field(
@@ -125,14 +127,14 @@ class CelerySettings(BaseSettings):
     )
 
 
-class RateLimitSettings(BaseSettings):
+class RateLimitSettings(BaseModel):
     """Rate limiting settings."""
 
     rate_limit_enabled: bool = Field(default=True, description="Enable rate limiting")
     rate_limit_per_minute: int = Field(default=60, description="Rate limit per minute")
 
 
-class MonitoringSettings(BaseSettings):
+class MonitoringSettings(BaseModel):
     """Monitoring settings."""
 
     sentry_dsn: str = Field(default="", description="Sentry DSN")
@@ -149,6 +151,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
+        env_nested_delimiter="__",
     )
 
     # Aggregate all settings
@@ -163,22 +166,6 @@ class Settings(BaseSettings):
     celery: CelerySettings = Field(default_factory=CelerySettings)
     rate_limit: RateLimitSettings = Field(default_factory=RateLimitSettings)
     monitoring: MonitoringSettings = Field(default_factory=MonitoringSettings)
-
-    def __init__(self, **kwargs: Any) -> None:
-        """Initialize settings with environment-specific overrides."""
-        super().__init__(**kwargs)
-        # Load nested settings from environment variables
-        self.app = AppSettings()
-        self.server = ServerSettings()
-        self.database = DatabaseSettings()
-        self.redis = RedisSettings()
-        self.security = SecuritySettings()
-        self.cors = CORSSettings()
-        self.logging = LoggingSettings()
-        self.email = EmailSettings()
-        self.celery = CelerySettings()
-        self.rate_limit = RateLimitSettings()
-        self.monitoring = MonitoringSettings()
 
 
 @lru_cache

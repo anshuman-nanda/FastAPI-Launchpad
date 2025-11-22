@@ -1,6 +1,7 @@
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
+from sqlalchemy.engine import make_url
 
 from alembic import context
 
@@ -18,10 +19,9 @@ from app.database import Base
 config = context.config
 
 # Override sqlalchemy.url with our configuration
-config.set_main_option(
-    "sqlalchemy.url",
-    str(settings.database.database_url).replace("postgresql://", "postgresql+psycopg2://"),
-)
+db_url = make_url(str(settings.database.database_url))
+sync_db_url = db_url.set(drivername="postgresql+psycopg2")
+config.set_main_option("sqlalchemy.url", str(sync_db_url))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

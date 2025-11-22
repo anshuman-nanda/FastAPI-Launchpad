@@ -3,7 +3,7 @@ FastAPI dependencies.
 Provides reusable dependencies for dependency injection.
 """
 
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer

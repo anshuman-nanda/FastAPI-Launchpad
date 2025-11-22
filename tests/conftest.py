@@ -4,7 +4,7 @@ Provides reusable test fixtures following the Fixture pattern.
 """
 
 import asyncio
-from typing import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Generator
 
 import pytest
 from fastapi.testclient import TestClient

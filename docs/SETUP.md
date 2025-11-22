@@ -42,6 +42,7 @@ fastapi-production-template/
 │   ├── models/              # Database models
 │   │   └── base.py          # Base model with common fields
 │   ├── schemas/             # Pydantic schemas (DTOs)
+│   │   └── common.py        # Common request/response schemas
 │   ├── services/            # Business logic layer
 │   ├── utils/               # Utility functions
 │   │   └── logger.py        # Logging configuration

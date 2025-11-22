@@ -2,10 +2,9 @@
 Test basic application functionality.
 """
 
-import pytest
 from fastapi.testclient import TestClient
 
-from app.main import create_application
+from app.factory import create_application
 
 
 def test_create_application():

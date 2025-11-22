@@ -3,10 +3,15 @@ Database configuration and session management.
 Implements the Dependency Injection pattern for database sessions.
 """
 
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator, Generator
 
 from sqlalchemy import create_engine
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.engine import make_url
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 from app.config import settings
@@ -15,12 +20,14 @@ from app.config import settings
 class Base(DeclarativeBase):
     """Base class for SQLAlchemy models."""
 
-    pass
 
+# Parse base database URL
+base_db_url = make_url(str(settings.database.database_url))
 
 # Synchronous engine for Alembic migrations
+sync_db_url = base_db_url.set(drivername="postgresql+psycopg2")
 sync_engine = create_engine(
-    str(settings.database.database_url).replace("postgresql://", "postgresql+psycopg2://"),
+    sync_db_url,
     pool_size=settings.database.database_pool_size,
     max_overflow=settings.database.database_max_overflow,
     echo=settings.database.database_echo,
@@ -28,8 +35,9 @@ sync_engine = create_engine(
 )
 
 # Asynchronous engine for FastAPI
+async_db_url = base_db_url.set(drivername="postgresql+asyncpg")
 async_engine = create_async_engine(
-    str(settings.database.database_url).replace("postgresql://", "postgresql+asyncpg://"),
+    async_db_url,
     pool_size=settings.database.database_pool_size,
     max_overflow=settings.database.database_max_overflow,
     echo=settings.database.database_echo,
@@ -53,7 +61,7 @@ AsyncSessionLocal = async_sessionmaker(
 )
 
 
-def get_sync_db() -> Session:
+def get_sync_db() -> Generator[Session, None, None]:
     """
     Dependency for synchronous database session.
     Follows the Dependency Injection pattern.

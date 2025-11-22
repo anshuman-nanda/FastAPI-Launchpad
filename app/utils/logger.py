@@ -3,10 +3,16 @@ Logging utility using Loguru.
 Provides structured logging with rotation and retention.
 """
 
+from __future__ import annotations
+
 import sys
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from loguru import logger
+
+if TYPE_CHECKING:
+    from loguru import Logger
 
 from app.config import settings
 
@@ -62,6 +68,7 @@ def setup_logging() -> None:
     logger.info("Logging configured successfully")
 
 
-def get_logger() -> logger:
+def get_logger() -> Logger:
     """Get logger instance."""
     return logger
+
