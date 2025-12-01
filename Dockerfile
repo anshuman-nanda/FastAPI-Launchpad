@@ -22,11 +22,11 @@ RUN pip install poetry==2.2.1
 WORKDIR /app
 
 # Copy dependency files
-COPY pyproject.toml poetry.lock* ./
+COPY pyproject.toml poetry.lock ./
 
 # Install dependencies without dev dependencies
 RUN poetry config virtualenvs.create false \
-    && poetry install --only main --no-interaction --no-ansi
+    && poetry install --without dev --no-interaction --no-ansi --no-root
 
 # Stage 2: Runtime
 FROM python:3.12-slim
@@ -53,6 +53,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Copy application code
 COPY --chown=appuser:appuser app ./app
 COPY --chown=appuser:appuser alembic ./alembic
+COPY --chown=appuser:appuser alembic.ini ./alembic.ini
 COPY --chown=appuser:appuser .env.example ./.env
 
 # Create logs directory
