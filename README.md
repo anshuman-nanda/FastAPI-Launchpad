@@ -73,7 +73,7 @@ pip install -r requirements.txt  # Add your dependencies
 # 4. Start building your API!
 ```
 
-### 🤖 Activating the PROD Grade Agent
+### 🤖 Activating the Production-Grade Agent
 
 The custom GitHub Copilot agent is automatically available in your repository. When writing code, Copilot will:
 
@@ -228,15 +228,14 @@ func azure functionapp publish <APP_NAME>
 
 ## 🎬 Demo
 
-<!-- Add your demo GIF or screenshots here -->
+> **Note**: Demo materials are currently in development. Watch this space for upcoming screenshots and videos!
 
-### Screenshots
+We're working on creating comprehensive demo materials including:
+- Screenshots of the custom agent in action
+- Code suggestions and best practice enforcement examples  
+- Video demonstration of building a production API using this template
 
-*Coming soon: Screenshots of the custom agent in action, showing code suggestions and best practice enforcement.*
-
-### Demo Video
-
-*Coming soon: Video demonstration of building a production API using this template.*
+Check back soon or [watch this repository](https://github.com/anshuman-nanda/production-api-template) for updates!
 
 ---
 
@@ -378,7 +377,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- [Documentation](https://github.com/anshuman-nanda/production-api-template/wiki) *(Coming Soon)*
 - [Issue Tracker](https://github.com/anshuman-nanda/production-api-template/issues)
 - [Discussions](https://github.com/anshuman-nanda/production-api-template/discussions)
 
