@@ -7,6 +7,8 @@
 
 A production-ready REST API template built with FastAPI, designed to accelerate development with best practices, CI/CD integration, and Docker support.
 
+> **Note**: This is a template repository. Clone it and customize it for your specific API needs. Update the repository URL, project name, and dependencies according to your requirements.
+
 ## 🏷️ Topics
 
 This repository covers the following topics for better discoverability:
@@ -42,17 +44,17 @@ This repository covers the following topics for better discoverability:
 
 ```bash
 # Clone the repository
-git clone https://github.com/anshuman-nanda/production-api-template.git
-cd production-api-template
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
 
 # Create virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements.txt  # Create this file with your dependencies
 
-# Run the application
+# Run the application (adjust the entry point as needed)
 uvicorn main:app --reload
 ```
 
@@ -60,10 +62,10 @@ uvicorn main:app --reload
 
 ```bash
 # Build the Docker image
-docker build -t production-api-template .
+docker build -t your-api-name .
 
 # Run the container
-docker run -p 8000:8000 production-api-template
+docker run -p 8000:8000 your-api-name
 ```
 
 ## 📖 Documentation
